@@ -1,6 +1,6 @@
 ---
 name: deskpeto
-description: 把用户的照片生成为专属 AI 桌宠（ChatGPT/Codex Pet 资源包）并协助安装。当用户想要「把照片/头像/宠物做成桌面宠物」「定制 Codex Pet / ChatGPT 桌宠」「安装 DeskPeto 宠物包」或询问 DeskPeto 订单进度时使用。Turn the user's photo into a personal desktop AI pet (ChatGPT/Codex Pet package) and help install it.
+description: 把用户的照片生成为专属 AI 桌宠（ChatGPT/Codex Pet 资源包）并协助安装；也可免费安装 DeskPeto 共享广场的社区公开桌宠。当用户想要「把照片/头像/宠物做成桌面宠物」「定制 Codex Pet / ChatGPT 桌宠」「免费试用一只桌宠」「安装 DeskPeto 宠物包」或询问 DeskPeto 订单进度时使用。Turn the user's photo into a personal desktop AI pet (ChatGPT/Codex Pet package), help install it, or install free community pets from the shared gallery.
 version: 0.1.0
 tags: [desktop-pet, codex-pet, chatgpt, avatar, deskpeto]
 license: MIT
@@ -37,9 +37,13 @@ DeskPeto（https://deskpeto.com）把一张照片生成为**身份一致**的桌
 - Pets 列表里看不到 → 确认文件夹位于 `~/.codex/pets/<目录>/` 且内含 `pet.json` 与 `spritesheet.webp`，重启 ChatGPT/Codex 后刷新。
 - 宠物不动/状态不切换 → 确认使用的是 ChatGPT/Codex 桌面端（网页版能力不同），详细见 deskpeto.com/guide。
 
+## 免费试用：共享广场
+
+- 共享广场 https://deskpeto.com/shared 上的社区公开宠物**免费安装**（登录后进入宠物页取安装命令或下载包，安装方式与上文相同）。
+- 适合先免费体验桌宠效果，再付费生成自己的专属形象。
+
 ## 更多
 
-- 共享广场 https://deskpeto.com/shared 可浏览社区公开宠物；页面提供安装入口的公开宠物可按同样方式安装。
 - 安装图文指南：https://deskpeto.com/guide
 
 ## English quick reference
