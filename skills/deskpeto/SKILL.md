@@ -28,7 +28,7 @@ DeskPeto（https://deskpeto.com）把一张照片生成为**身份一致**的桌
      - Windows PowerShell：`irm 'https://api.deskpeto.com/v1/install/….ps1?t=…' | iex`
      - 命令把 `pet.json` 与 `spritesheet.webp` 装进 `~/.codex/pets/<宠物目录>/`。**命令 1 小时过期**，过期让用户回宠物页重新复制。
    - **手动**：下载 zip → 解压 → 整个文件夹放入 `~/.codex/pets/`（Windows：`%USERPROFILE%\.codex\pets\`）。
-   - **其他 AI 工具**：经开源 Runner「clawd-on-desk」导入同一个 zip，可在 Claude Code、CodeBuddy 等 18+ 工具旁显示（详见 deskpeto.com/guide）。
+   - **其他 AI 工具**：经开源 Runner「clawd-on-desk」导入同一个 zip，可在 Claude Code、CodeBuddy 等多种工具旁显示（第三方项目，以其自身文档为准）。
 6. **唤醒**：ChatGPT/Codex 桌面端 → Settings → Pets → 刷新列表选中；或在 Codex 中输入 `/pet`。看到宠物悬浮在桌面即成功。
 
 ## 排错
