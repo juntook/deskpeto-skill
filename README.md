@@ -3,14 +3,14 @@
 把你的照片生成为专属 AI 桌宠的智能体技能 · An agent skill that turns your photo into a personal desktop AI pet.
 
 - 产品：[DeskPeto](https://deskpeto.com) — 一张照片 → 身份一致的 ChatGPT/Codex 桌宠资源包（Codex Pet v2，8×11 动作图集，宠物随 agent 任务状态切换动作）。
-- 本仓库：面向 AI 工作台/智能体（WorkBuddy、OpenClaw、Claude 系等）的分发壳。技能本体在 [`skills/deskpeto/SKILL.md`](skills/deskpeto/SKILL.md)。
+- 本仓库：面向 AI 工作台/智能体（WorkBuddy、OpenClaw、Claude 系等）的分发壳。技能本体在 [`skills/deskpeto/SKILL.md`](skills/deskpeto/SKILL.md)，ClawHub 页面：https://clawhub.ai/juntook/skills/deskpeto
 
 ## 安装这个技能
 
 | 环境 | 方式 |
 | --- | --- |
 | WorkBuddy | 技能市场搜索 `deskpeto` 一键安装；或把 `skills/deskpeto/` 文件夹放入 `~/.workbuddy/skills/` |
-| OpenClaw | `clawhub install deskpeto`；或把 `skills/deskpeto/` 放入 OpenClaw 的 skills 目录 |
+| OpenClaw | `openclaw skills install @juntook/deskpeto`；或把 `skills/deskpeto/` 放入 OpenClaw 的 skills 目录 |
 | 其他兼容 SKILL.md 的智能体 | 复制 `skills/deskpeto/` 到对应 skills 目录 |
 
 技能安装后，对你的 AI 说「把我的照片做成桌面宠物」即可开始。
