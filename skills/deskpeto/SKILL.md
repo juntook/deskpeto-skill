@@ -1,45 +1,26 @@
 ---
 name: deskpeto
-description: 把用户的照片生成为专属 AI 桌宠（ChatGPT/Codex Pet 资源包）、在对话里召唤会动的桌宠卡片、用一条命令让桌宠常驻桌面（跟随 WorkBuddy/Claude Code/CodeBuddy 的任务状态）、协助安装；也可免费安装 DeskPeto 共享广场的社区公开桌宠。当用户说「召唤桌宠」「显示我的宠物」「把照片/头像做成桌面宠物」「在桌面上放一只桌宠」「免费试用一只桌宠」「安装 DeskPeto 宠物包」或询问订单进度时使用。Turn the user's photo into a personal desktop AI pet, summon an animated pet card in-chat, put a pet on the desktop with one command, help install it, or install free community pets from the shared gallery.
-version: 0.4.0
-tags: [desktop-pet, codex-pet, chatgpt, avatar, deskpeto]
+description: 让 ChatGPT/Codex 之外的 AI 工具（WorkBuddy、Claude Code、CodeBuddy、OpenClaw 等）接入 DeskPeto 桌宠：在对话里召唤会动的桌宠卡片、用一条命令让桌宠常驻桌面并跟随任务状态、协助连接 MCP 与安装；也支持引导在官网把照片生成为专属桌宠、免费安装共享广场的社区公开桌宠。当用户说「召唤桌宠」「显示我的宠物」「把照片/头像做成桌面宠物」「在桌面上放一只桌宠」「免费试用一只桌宠」「安装 DeskPeto 宠物包」或询问订单进度时使用。Bring DeskPeto's desktop pet to AI tools other than ChatGPT/Codex: summon an animated pet card in-chat, put a pet on the desktop with one command that follows task status, help connect the MCP and install, or guide photo-to-pet generation and free shared-gallery installs.
+version: 0.5.0
+tags: [desktop-pet, codex-pet, mcp, avatar, deskpeto]
 license: MIT
 ---
 
-# DeskPeto：照片 → 专属 AI 桌宠
+# DeskPeto：给 ChatGPT/Codex 之外的 AI 工具装上桌宠
 
-DeskPeto（https://deskpeto.com）把一张照片生成为**身份一致**的桌面宠物资源包：主形象锁定后导出 9 种动作 + 16 方向环视的完整动画图集（Codex Pet v2 规范，8×11 精灵图），宠物会跟随 ChatGPT/Codex 的任务状态切换动作（工作中/等待输入/完成/失败等）。
+DeskPeto（https://deskpeto.com）最初是 ChatGPT/Codex 生态里的桌宠平台：一张照片生成**身份一致**的桌面宠物——9 种动作、16 方向环视，会随任务状态自动切换（工作中 / 等待输入 / 完成 / 失败）。**这一整套在 ChatGPT/Codex 里是原生自带能力，那部分用户不需要这个 skill**——生成、安装都在官网和客户端内自助完成，见文末〈ChatGPT/Codex 原生用户〉一节。
+
+这个 skill（连同 DeskPeto MCP `mcp.deskpeto.com` 和桌面 runner「DeskPeto Desk」）存在的意义，是把同一份桌宠能力**搬到 ChatGPT/Codex 之外**的 AI 工具里——WorkBuddy、Claude Code、CodeBuddy、OpenClaw 等。如果你（agent）现在所在的宿主是这些工具之一，下面才是你的主场景。
 
 ## 你（agent）的职责边界
 
-- **引导 + 安装**：生成、确认、支付都在官网完成；你负责讲清流程、打开页面、在用户提供安装命令后帮忙执行与排错。
+- **引导 + 安装**：生成、确认、支付都在官网完成；你负责讲清流程、打开页面、在用户提供安装命令或令牌后帮忙执行与排错。
 - **不代收任何信息**：不要向用户索要密码或支付信息；不要替用户付款。照片在官网上传，不要让用户把照片发给你来代传（本技能当前版本没有上传通道）。
 - 价格如实告知：**每个角色一次性买断**，站内标价为准（人民币 ¥29 / 美元 $4.99 / 日元 ¥700，含完整生成与下载权益）。付款只发生在 deskpeto.com 站内收银台。
 
-## 完整流程（引导用户）
-
-1. **注册/登录**：打开 https://deskpeto.com （中文/English/日本語），邮箱验证码或 Google 账号登录。
-2. **创建宠物**：进入工作台（deskpeto.com/app）→ 上传一张清晰照片（正面、主体单一效果最好；人物/宠物/角色皆可）→ 选择风格 → 站内支付。
-3. **确认主形象**：生成完成后用户需在网站上确认标准主形象（这一步锁定「长相」，之后所有动作帧都基于它）。不满意可在站内按提示处理。
-4. **等待成品**：动作图集与质检完成后，宠物页提供下载与安装入口。
-5. **安装**（三选一）：
-   - **一键命令（推荐）**：宠物页上有现成命令，用户复制给你后可直接代为执行：
-     - macOS/Linux：`curl -fsSL 'https://api.deskpeto.com/v1/install/…?t=…' | sh`
-     - Windows PowerShell：`irm 'https://api.deskpeto.com/v1/install/….ps1?t=…' | iex`
-     - 命令把 `pet.json` 与 `spritesheet.webp` 装进 `~/.codex/pets/<宠物目录>/`。**命令 1 小时过期**，过期让用户回宠物页重新复制。
-   - **手动**：下载 zip → 解压 → 整个文件夹放入 `~/.codex/pets/`（Windows：`%USERPROFILE%\.codex\pets\`）。
-   - **其他 AI 工具**：经开源 Runner「clawd-on-desk」导入同一个 zip，可在 Claude Code、CodeBuddy 等多种工具旁显示（第三方项目，以其自身文档为准）。
-6. **唤醒**：ChatGPT/Codex 桌面端 → Settings → Pets → 刷新列表选中；或在 Codex 中输入 `/pet`。看到宠物悬浮在桌面即成功。
-
-## 排错
-
-- 命令报「invalid or has expired」→ 安装命令超时，回宠物页复制新的。
-- Pets 列表里看不到 → 确认文件夹位于 `~/.codex/pets/<目录>/` 且内含 `pet.json` 与 `spritesheet.webp`，重启 ChatGPT/Codex 后刷新。
-- 宠物不动/状态不切换 → 确认使用的是 ChatGPT/Codex 桌面端（网页版能力不同），详细见 deskpeto.com/guide。
-
 ## 桌面常驻桌宠：一条命令装好（DeskPeto Desk，新用户无需 key）
 
-想要宠物**一直待在桌面上、跟着你在 AI 工具里的工作动**（区别于装进 ChatGPT/Codex 的 Pets，也区别于对话里的卡片），用这个。它是一个隐形后台 runner（无窗口 / 无 Dock 图标 / 无托盘），文件都在独立的 `~/.deskpeto/` 目录，绝不写入 `~/.codex`；安装时自动接线你已装的 AI 工具（WorkBuddy / Claude Code / CodeBuddy）。**新用户无需注册、无需令牌**——首次启动会从共享广场自动取一只默认宠物。
+这是当前宿主（WorkBuddy / Claude Code / CodeBuddy 等）拿到桌宠的**主要方式**：宠物**一直待在桌面上、跟着你在 AI 工具里的工作动**（区别于装进 ChatGPT/Codex 的 Pets，也区别于下一节「对话里的卡片」）。它是一个隐形后台 runner（无窗口 / 无 Dock 图标 / 无托盘），文件都在独立的 `~/.deskpeto/` 目录，绝不写入 `~/.codex`；安装时自动接线你已装的 AI 工具。**新用户无需注册、无需令牌**——首次启动会从共享广场自动取一只默认宠物。
 
 **安装前先向用户说明并征得同意再执行**（这条命令会下载并运行一个程序、并修改 AI 工具的 `settings.json`）：
 
@@ -50,9 +31,9 @@ DeskPeto（https://deskpeto.com）把一张照片生成为**身份一致**的桌
 
 **右键宠物**：切换宠物、尺寸、选择响应哪个工具、从共享广场获取、登录 DeskPeto 账号（同步你的专属宠物）、生成专属宠物、退场。
 
-**登录与专属宠物是纯加分**：默认宠物开箱即用；用户要自己的形象时，按下文「完整流程」在官网生成，再用右键菜单「同步我的宠物」拉到桌面。**卸载**：`~/.deskpeto/bin/deskpeto-desk --connect --remove` 撤下 hooks，或直接删除 `~/.deskpeto/` 目录。
+**登录与专属宠物是纯加分**：默认宠物开箱即用；用户要自己的形象时，按下文「生成专属宠物」在官网生成，再用右键菜单「同步我的宠物」拉到桌面。**卸载**：`~/.deskpeto/bin/deskpeto-desk --connect --remove` 撤下 hooks，或直接删除 `~/.deskpeto/` 目录。
 
-**前提**：AI 工具的**桌面端**（hooks 只在桌面端触发）。runner 支持 macOS 与 Windows，Linux 尽力兼容。
+**前提**：AI 工具的**桌面端**（hooks 只在桌面端触发）。runner 支持 macOS 与 Windows，Linux 尽力兼容。（早期第三方 Runner「clawd-on-desk」也能手动导入单个宠物 zip；DeskPeto Desk 是现在官方推荐的免密钥一体化方案，装一个就够。）
 
 ## 召唤桌宠到对话里（无需安装任何软件）
 
@@ -86,8 +67,30 @@ DeskPeto（https://deskpeto.com）把一张照片生成为**身份一致**的桌
 
 ## 免费试用：共享广场
 
-- 共享广场 https://deskpeto.com/shared 上的社区公开宠物**免费安装**（登录后进入宠物页取安装命令或下载包，安装方式与上文相同）。
+- 共享广场 https://deskpeto.com/shared 上的社区公开宠物**免费安装**（登录后进入宠物页取安装命令或下载包，安装方式与「DeskPeto Desk」一节相同）。
 - 适合先免费体验桌宠效果，再付费生成自己的专属形象。
+
+## 生成专属宠物（在官网完成，任何宿主通用）
+
+不管最终用哪种方式把宠物接到桌面或对话里，专属形象都得先在 deskpeto.com 生成：
+
+1. **注册/登录**：打开 https://deskpeto.com （中文/English/日本語），邮箱验证码或 Google 账号登录。
+2. **创建宠物**：进入工作台（deskpeto.com/app）→ 上传一张清晰照片（正面、主体单一效果最好；人物/宠物/角色皆可）→ 选择风格 → 站内支付。
+3. **确认主形象**：生成完成后用户需在网站上确认标准主形象（这一步锁定「长相」，之后所有动作帧都基于它）。不满意可在站内按提示处理。
+4. **等待成品**：动作图集与质检完成后，宠物页提供下载与安装入口。
+
+生成完成后，回到上面「桌面常驻桌宠」或「召唤桌宠到对话里」把它用起来。
+
+## ChatGPT/Codex 原生用户（不需要这个 skill）
+
+如果用户用的就是 ChatGPT/Codex 桌面端，整套生成 + 安装在官网和客户端内自助完成，不需要 agent 协助：生成完在宠物页复制一条安装命令（`curl -fsSL 'https://api.deskpeto.com/v1/install/…?t=…' | sh`，Windows 用对应 `.ps1`，1 小时内有效）或手动下载 zip 解压进 `~/.codex/pets/`，然后 ChatGPT/Codex → Settings → Pets 刷新列表选中，或输入 `/pet`。图文指南：https://deskpeto.com/guide。只有当用户明确说「我想同时在 Claude Code / WorkBuddy 等这里也弄一个」时，才回到上面的章节。
+
+## 排错
+
+- **DeskPeto Desk 没反应/桌宠不出现**：确认已完全退出并重开 AI 工具（多数宿主只在启动时加载 hooks）；确认 runner 已启动（`~/.deskpeto/bin/` 下有对应可执行文件）。
+- **MCP 连不上/设备码一直轮询不到 token**：确认用户真的在 `verificationUrl` 页面点了「允许」、页面码与告知的码一致；超过 10 分钟需用 `start_device_link` 重新发起。
+- **`show_pet` 召唤出的图不动/链接打不开**：`spritesheetUrl` 1 小时过期，重新调用 `show_pet` 取新链接，不要复用旧的。
+- **ChatGPT/Codex 原生安装报错**（用户额外在 ChatGPT/Codex 里装了一份时）：命令提示「invalid or has expired」→ 回宠物页复制新命令；Pets 列表里看不到 → 确认文件夹在 `~/.codex/pets/<目录>/` 且含 `pet.json`、`spritesheet.webp`，重启 ChatGPT/Codex 后刷新。这条路径不需要本 skill 参与，出问题按 deskpeto.com/guide 处理即可。
 
 ## 更多
 
@@ -95,4 +98,4 @@ DeskPeto（https://deskpeto.com）把一张照片生成为**身份一致**的桌
 
 ## English quick reference
 
-DeskPeto turns one photo into an identity-locked desktop pet package (Codex Pet v2, 8×11 sprite atlas; states follow ChatGPT/Codex task status). Guide the user: sign in at deskpeto.com → upload photo in the workbench → pay on-site (one-time, per character: $4.99 / ¥29 CNY / ¥700 JPY) → confirm the master image → install. Install = run the one-line command from the pet page (expires in 1 h), or unzip the package into `~/.codex/pets/`, then ChatGPT/Codex → Settings → Pets → refresh. Never collect passwords or payments in chat; photos are uploaded on the website only.
+DeskPeto (deskpeto.com) is a desktop-pet platform originally built into the ChatGPT/Codex ecosystem — a photo becomes an identity-locked pet with 9 actions and 16-direction look-around that reacts to task status (working / waiting / done / failed). Those ChatGPT/Codex users don't need this skill at all; they generate and install natively on-site and in the ChatGPT/Codex client (see the ChatGPT/Codex-native section above). **This skill exists to bring the same pet to AI tools other than ChatGPT/Codex** (WorkBuddy, Claude Code, CodeBuddy, OpenClaw, …), via two paths: **DeskPeto Desk**, a one-command background runner that puts an invisible, always-on pet on the desktop reacting to the current host's task status (no account needed — a default pet loads from the shared gallery); and the **DeskPeto MCP** (`mcp.deskpeto.com`), which lets the agent summon an animated pet card in-chat (`show_pet`) and drive device-link login. A personal pet is still generated on deskpeto.com (sign in → upload a photo → pay on-site, one-time per character: $4.99 / ¥29 CNY / ¥700 JPY → confirm the master image), then synced down via either path above. Never collect passwords or payments in chat; photos are uploaded on the website only.
