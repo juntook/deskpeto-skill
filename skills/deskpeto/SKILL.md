@@ -1,7 +1,7 @@
 ---
 name: deskpeto
-description: 把用户的照片生成为专属 AI 桌宠（ChatGPT/Codex Pet 资源包）并协助安装；也可免费安装 DeskPeto 共享广场的社区公开桌宠。当用户想要「把照片/头像/宠物做成桌面宠物」「定制 Codex Pet / ChatGPT 桌宠」「免费试用一只桌宠」「安装 DeskPeto 宠物包」或询问 DeskPeto 订单进度时使用。Turn the user's photo into a personal desktop AI pet (ChatGPT/Codex Pet package), help install it, or install free community pets from the shared gallery.
-version: 0.1.0
+description: 把用户的照片生成为专属 AI 桌宠（ChatGPT/Codex Pet 资源包）、在对话里召唤会动的桌宠卡片、协助安装；也可免费安装 DeskPeto 共享广场的社区公开桌宠。当用户说「召唤桌宠」「显示我的宠物」「把照片/头像做成桌面宠物」「免费试用一只桌宠」「安装 DeskPeto 宠物包」或询问订单进度时使用。Turn the user's photo into a personal desktop AI pet, summon an animated pet card in-chat, help install it, or install free community pets from the shared gallery.
+version: 0.2.0
 tags: [desktop-pet, codex-pet, chatgpt, avatar, deskpeto]
 license: MIT
 ---
@@ -36,6 +36,29 @@ DeskPeto（https://deskpeto.com）把一张照片生成为**身份一致**的桌
 - 命令报「invalid or has expired」→ 安装命令超时，回宠物页复制新的。
 - Pets 列表里看不到 → 确认文件夹位于 `~/.codex/pets/<目录>/` 且内含 `pet.json` 与 `spritesheet.webp`，重启 ChatGPT/Codex 后刷新。
 - 宠物不动/状态不切换 → 确认使用的是 ChatGPT/Codex 桌面端（网页版能力不同），详细见 deskpeto.com/guide。
+
+## 召唤桌宠到对话里（无需安装任何软件）
+
+用户说「召唤桌宠 / 显示我的宠物 / summon my pet」时，按以下流程执行（不要自己发挥画一只——用户要的是他在 DeskPeto 的真实宠物）：
+
+1. **前提**：已连接 DeskPeto MCP（见下节）。调用 `show_pet` 工具（可传 `state` 参数：idle/waving/jumping/running/waiting/review/failed）。
+2. **如果你的宿主渲染了交互卡片**（MCP Apps）：宠物已经出现在气泡里，无需更多操作。
+3. **如果没有渲染卡片**（如 WorkBuddy 桌面端）：从工具返回的 `structuredContent` 里取 `name` 与 `spritesheetUrl`，复制本技能自带的模板 `references/pet-page.html`，把 `__PET_NAME__` 和 `__SPRITESHEET_URL__` 替换为真实值，用宿主的文件展示能力（如 present_files）打开这个页面——它会用真实精灵图逐帧播放动画，并带状态切换按钮。
+4. **注意**：`spritesheetUrl` 带 1 小时时效签名，过期后重新调用 `show_pet` 取新链接，不要复用旧 URL；不要修改模板里的帧时长表（那是与官方桌宠一致的动画节奏）。
+
+## 连接 DeskPeto MCP（解锁查询/召唤/一键安装）
+
+1. 让用户在浏览器登录 deskpeto.com 后打开 **https://mcp.deskpeto.com/mcp/connect** 生成连接令牌（只显示一次）。
+2. 写入宿主的 MCP 配置（WorkBuddy：连接器 → 自定义连接器 / `~/.workbuddy/mcp.json`）：
+
+```json
+{ "mcpServers": { "deskpeto": {
+  "url": "https://mcp.deskpeto.com/mcp",
+  "headers": { "Authorization": "Bearer <令牌>" } } } }
+```
+
+3. 不支持自定义请求头的客户端改用 `https://mcp.deskpeto.com/mcp?key=<令牌>`。配置后需完全重启宿主应用。
+4. 未连接令牌时，`browse_shared_pets` / `how_to_create_pet` / `show_pet`（公开宠物）仍可用；个人宠物与安装命令需要令牌。
 
 ## 免费试用：共享广场
 
