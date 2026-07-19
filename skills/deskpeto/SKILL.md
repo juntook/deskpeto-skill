@@ -1,7 +1,7 @@
 ---
 name: deskpeto
-description: 把用户的照片生成为专属 AI 桌宠（ChatGPT/Codex Pet 资源包）、在对话里召唤会动的桌宠卡片、协助安装；也可免费安装 DeskPeto 共享广场的社区公开桌宠。当用户说「召唤桌宠」「显示我的宠物」「把照片/头像做成桌面宠物」「免费试用一只桌宠」「安装 DeskPeto 宠物包」或询问订单进度时使用。Turn the user's photo into a personal desktop AI pet, summon an animated pet card in-chat, help install it, or install free community pets from the shared gallery.
-version: 0.3.0
+description: 把用户的照片生成为专属 AI 桌宠（ChatGPT/Codex Pet 资源包）、在对话里召唤会动的桌宠卡片、用一条命令让桌宠常驻桌面（跟随 WorkBuddy/Claude Code/CodeBuddy 的任务状态）、协助安装；也可免费安装 DeskPeto 共享广场的社区公开桌宠。当用户说「召唤桌宠」「显示我的宠物」「把照片/头像做成桌面宠物」「在桌面上放一只桌宠」「免费试用一只桌宠」「安装 DeskPeto 宠物包」或询问订单进度时使用。Turn the user's photo into a personal desktop AI pet, summon an animated pet card in-chat, put a pet on the desktop with one command, help install it, or install free community pets from the shared gallery.
+version: 0.4.0
 tags: [desktop-pet, codex-pet, chatgpt, avatar, deskpeto]
 license: MIT
 ---
@@ -36,6 +36,23 @@ DeskPeto（https://deskpeto.com）把一张照片生成为**身份一致**的桌
 - 命令报「invalid or has expired」→ 安装命令超时，回宠物页复制新的。
 - Pets 列表里看不到 → 确认文件夹位于 `~/.codex/pets/<目录>/` 且内含 `pet.json` 与 `spritesheet.webp`，重启 ChatGPT/Codex 后刷新。
 - 宠物不动/状态不切换 → 确认使用的是 ChatGPT/Codex 桌面端（网页版能力不同），详细见 deskpeto.com/guide。
+
+## 桌面常驻桌宠：一条命令装好（DeskPeto Desk，新用户无需 key）
+
+想要宠物**一直待在桌面上、跟着你在 AI 工具里的工作动**（区别于装进 ChatGPT/Codex 的 Pets，也区别于对话里的卡片），用这个。它是一个隐形后台 runner（无窗口 / 无 Dock 图标 / 无托盘），文件都在独立的 `~/.deskpeto/` 目录，绝不写入 `~/.codex`；安装时自动接线你已装的 AI 工具（WorkBuddy / Claude Code / CodeBuddy）。**新用户无需注册、无需令牌**——首次启动会从共享广场自动取一只默认宠物。
+
+**安装前先向用户说明并征得同意再执行**（这条命令会下载并运行一个程序、并修改 AI 工具的 `settings.json`）：
+
+- macOS / Linux：`curl -fsSL https://api.deskpeto.com/v1/runner/install | sh`
+- Windows PowerShell：`irm https://api.deskpeto.com/v1/runner/install.ps1 | iex`
+
+命令做三件事：把对应平台的 runner 下到 `~/.deskpeto/bin/` → 自动接线 hooks → 启动。装好后让用户**完全退出并重开** AI 工具（多数宿主仅启动时加载 hooks），桌宠即随任务切换动作（工作中 / 等待输入 / 完成 / 失败）。
+
+**右键宠物**：切换宠物、尺寸、选择响应哪个工具、从共享广场获取、登录 DeskPeto 账号（同步你的专属宠物）、生成专属宠物、退场。
+
+**登录与专属宠物是纯加分**：默认宠物开箱即用；用户要自己的形象时，按下文「完整流程」在官网生成，再用右键菜单「同步我的宠物」拉到桌面。**卸载**：`~/.deskpeto/bin/deskpeto-desk --connect --remove` 撤下 hooks，或直接删除 `~/.deskpeto/` 目录。
+
+**前提**：AI 工具的**桌面端**（hooks 只在桌面端触发）。runner 支持 macOS 与 Windows，Linux 尽力兼容。
 
 ## 召唤桌宠到对话里（无需安装任何软件）
 
