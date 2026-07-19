@@ -1,7 +1,7 @@
 ---
 name: deskpeto
 description: 把用户的照片生成为专属 AI 桌宠（ChatGPT/Codex Pet 资源包）、在对话里召唤会动的桌宠卡片、协助安装；也可免费安装 DeskPeto 共享广场的社区公开桌宠。当用户说「召唤桌宠」「显示我的宠物」「把照片/头像做成桌面宠物」「免费试用一只桌宠」「安装 DeskPeto 宠物包」或询问订单进度时使用。Turn the user's photo into a personal desktop AI pet, summon an animated pet card in-chat, help install it, or install free community pets from the shared gallery.
-version: 0.2.0
+version: 0.3.0
 tags: [desktop-pet, codex-pet, chatgpt, avatar, deskpeto]
 license: MIT
 ---
@@ -48,8 +48,12 @@ DeskPeto（https://deskpeto.com）把一张照片生成为**身份一致**的桌
 
 ## 连接 DeskPeto MCP（解锁查询/召唤/一键安装）
 
-1. 让用户在浏览器登录 deskpeto.com 后打开 **https://mcp.deskpeto.com/mcp/connect** 生成连接令牌（只显示一次）。
-2. 写入宿主的 MCP 配置（WorkBuddy：连接器 → 自定义连接器 / `~/.workbuddy/mcp.json`）：
+**首选：设备码授权（用户零复制粘贴）**——前提是宿主已能访问 `https://mcp.deskpeto.com/mcp`（哪怕未带令牌）：
+
+1. 调用 `start_device_link` 工具（`label` 传宿主名，如 "WorkBuddy"），得到 `userCode`、`verificationUrl`、`deviceCode`。
+2. 把授权码告诉用户，并帮用户打开 `verificationUrl`（浏览器）。提醒：登录 deskpeto.com 后回到该页点「允许」，核对页面上的码与你告知的一致。
+3. 每 3 秒调用 `poll_device_link`（传 `deviceCode`）直到返回 `token`（只返回一次，注意保存）。超时 10 分钟需重新发起。
+4. 把令牌写入宿主 MCP 配置（agent 可代写，如 `~/.workbuddy/mcp.json`）：
 
 ```json
 { "mcpServers": { "deskpeto": {
@@ -57,8 +61,11 @@ DeskPeto（https://deskpeto.com）把一张照片生成为**身份一致**的桌
   "headers": { "Authorization": "Bearer <令牌>" } } } }
 ```
 
-3. 不支持自定义请求头的客户端改用 `https://mcp.deskpeto.com/mcp?key=<令牌>`。配置后需完全重启宿主应用。
-4. 未连接令牌时，`browse_shared_pets` / `how_to_create_pet` / `show_pet`（公开宠物）仍可用；个人宠物与安装命令需要令牌。
+5. 不支持自定义请求头的客户端改用 `https://mcp.deskpeto.com/mcp?key=<令牌>`。写完提醒用户**完全重启宿主应用**（多数宿主启动时才加载 MCP 配置）。
+
+**备用：手动令牌**——用户登录后打开 https://mcp.deskpeto.com/mcp/connect 点「生成」，把令牌贴回对话，你代写配置。
+
+未连接令牌时，`browse_shared_pets` / `how_to_create_pet` / `show_pet`（公开宠物）/ 设备码两件套仍可用；个人宠物与安装命令需要令牌。
 
 ## 免费试用：共享广场
 
